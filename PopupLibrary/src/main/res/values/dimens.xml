@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="tag_selected_item_margin">8dp</dimen>
+    <dimen name="card_corner_radius">2dp</dimen>
+    <dimen name="regular_text_size">18sp</dimen>
+    <dimen name="tag_search_margin">12sp</dimen>
+</resources>

@@ -1,0 +1,3 @@
+include ':PopupLibrary'
+include ':app'
+rootProject.name = "TagsSelection"

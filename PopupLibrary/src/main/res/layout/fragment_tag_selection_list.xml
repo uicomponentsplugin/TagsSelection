@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/screen_margin"
+        android:layout_marginTop="@dimen/button_margin"
+        android:layout_marginRight="@dimen/screen_margin">
 
         <LinearLayout
             android:id="@+id/llSelectedTags"
@@ -24,12 +26,15 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/tag_search_margin"
         android:background="@color/white"
-        android:hint="@string/hint_search" />
+        android:hint="@string/hint_search"
+        android:padding="@dimen/edit_text_padding" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTags"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:layout_marginLeft="@dimen/screen_margin"
+        android:layout_marginRight="@dimen/screen_margin"
         android:background="@color/white" />
 
     <com.google.android.material.button.MaterialButton
@@ -37,6 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_margin="@dimen/button_margin"
         android:text="Submit"
         android:textSize="18sp" />
 

@@ -1,10 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
+   <!-- <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="white">#FFFFFFFF</color> -->
+   <color name="purple_200">@color/primaryLightColor</color>
+   <color name="purple_500">@color/primaryDarkColor</color>
+   <color name="purple_700">@color/primaryDarkColor</color>
+   <color name="teal_200">@color/secondaryLightColor</color>
+   <color name="teal_700">@color/secondaryDarkColor</color>
+   <color name="black">@color/primaryTextColor</color>
+   <color name="white">#FFFFFFFF</color>
+
+   <color name="primaryColor">#028ed4</color>
+   <color name="primaryLightColor">#5fbeff</color>
+   <color name="primaryDarkColor">#0061a2</color>
+   <color name="secondaryColor">#ff6702</color>
+   <color name="secondaryLightColor">#ff9940</color>
+   <color name="secondaryDarkColor">#c43500</color>
+   <color name="primaryTextColor">#000000</color>
+   <color name="secondaryTextColor">#000000</color>
+
+   <!--100% — FF
+   95% — F2
+   90% — E6
+   85% — D9
+   80% — CC
+   75% — BF
+   70% — B3
+   65% — A6
+   60% — 99
+   55% — 8C
+   50% — 80
+   45% — 73
+   40% — 66
+   35% — 59
+   30% — 4D
+   25% — 40
+   20% — 33
+   15% — 26
+   10% — 1A
+   5% — 0D
+   0% — 00-->
+   <color name="trans_20_black">#33000000</color>
+   <color name="black_trans">#7000</color>
 </resources>

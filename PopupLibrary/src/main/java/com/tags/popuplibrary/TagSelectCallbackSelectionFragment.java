@@ -28,7 +28,7 @@ import static com.tags.popuplibrary.models.Constants.BundleKeys.MAX_SELECTABLE_T
 import static com.tags.popuplibrary.models.Constants.BundleKeys.TAGS;
 
 public class TagSelectCallbackSelectionFragment extends DialogFragment implements tagSelectCallback, View.OnClickListener {
-    private int mMaxSelectableTags;
+    private Integer mMaxSelectableTags;
     private Tags mTags;
     private FragmentTagSelectionListBinding binding;
     private tagSubmitCallback tagSubmitCallback;
@@ -36,10 +36,7 @@ public class TagSelectCallbackSelectionFragment extends DialogFragment implement
     public TagSelectCallbackSelectionFragment() {
     }
 
-    public static TagSelectCallbackSelectionFragment newInstance(Tags tags, int maxSelectableTags) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(TAGS, tags);
-        bundle.putSerializable(MAX_SELECTABLE_TAGS, maxSelectableTags);
+    public static TagSelectCallbackSelectionFragment newInstance(Bundle bundle) {
         TagSelectCallbackSelectionFragment tagSelectionFragment = new TagSelectCallbackSelectionFragment();
         tagSelectionFragment.setArguments(bundle);
         return tagSelectionFragment;
@@ -51,7 +48,8 @@ public class TagSelectCallbackSelectionFragment extends DialogFragment implement
         if (getArguments() == null || !(getArguments().getSerializable(TAGS) instanceof Tags))
             return;
         mTags = (Tags) getArguments().getSerializable(TAGS);
-        mMaxSelectableTags = getArguments().getInt(MAX_SELECTABLE_TAGS);
+        if (getArguments().getInt(MAX_SELECTABLE_TAGS) != 0)
+            mMaxSelectableTags = getArguments().getInt(MAX_SELECTABLE_TAGS);
     }
 
     @Override
@@ -88,7 +86,8 @@ public class TagSelectCallbackSelectionFragment extends DialogFragment implement
 
     @Override
     public void onSelect(Tag tag, boolean isChecked) {
-        if (isChecked)
+        if (isChecked
+                && !mTags.getSelectedTags().contains(tag))
             mTags.getSelectedTags().add(tag);
         else
             mTags.getSelectedTags().remove(tag);
@@ -112,6 +111,11 @@ public class TagSelectCallbackSelectionFragment extends DialogFragment implement
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             Util.setLayoutParamsMargin(params, 16);
             tagSelectedBinding.getRoot().setLayoutParams(params);
+           /* tagSelectedBinding.getRoot().setPadding(Util.dpToPx((int) getContext().getResources().getDimension(R.dimen.selected_tag_padding))
+                    , Util.dpToPx((int) getContext().getResources().getDimension(R.dimen.selected_tag_padding))
+                    , Util.dpToPx((int) getContext().getResources().getDimension(R.dimen.selected_tag_padding))
+                    , Util.dpToPx((int) getContext().getResources().getDimension(R.dimen.selected_tag_padding))
+            );*/
             binding.llSelectedTags.addView(tagSelectedBinding.getRoot());
             /*int stackCount  = binding.llSelectedTags.getChildCount();
             binding.llSelectedTags.getChildCount();*/
@@ -125,7 +129,8 @@ public class TagSelectCallbackSelectionFragment extends DialogFragment implement
         params.width = WindowManager.LayoutParams.MATCH_PARENT;
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
         getDialog().getWindow().setAttributes(params);
-        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+        //getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(ContextCompat.getColor(binding.getRoot().getContext(), R.color.black)));
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
     @Override

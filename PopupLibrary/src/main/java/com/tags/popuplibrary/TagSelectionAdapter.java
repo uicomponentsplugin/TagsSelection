@@ -1,9 +1,9 @@
 package com.tags.popuplibrary;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.Filter;
 import android.widget.Filterable;
 
@@ -19,14 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class TagSelectionAdapter extends RecyclerView.Adapter<TagSelectionAdapter.TagViewHolder> implements Filterable, CompoundButton.OnCheckedChangeListener {
+public class TagSelectionAdapter extends RecyclerView.Adapter<TagSelectionAdapter.TagViewHolder> implements Filterable {
 
     private Tags mTags;
-    private final int mMaxSelectableTags;
+    private final Integer mMaxSelectableTags;
     private final List<Tag> mFilteredTags = new ArrayList<>();
     private final com.tags.popuplibrary.models.tagSelectCallback tagSelectCallback;
 
-    public TagSelectionAdapter(tagSelectCallback tagSelectCallback, Tags tags, int maxSelectableTags) {
+    public TagSelectionAdapter(tagSelectCallback tagSelectCallback, Tags tags, Integer maxSelectableTags) {
         this.tagSelectCallback = tagSelectCallback;
         this.mMaxSelectableTags = maxSelectableTags;
         this.mTags = tags;
@@ -42,9 +42,31 @@ public class TagSelectionAdapter extends RecyclerView.Adapter<TagSelectionAdapte
     @Override
     public void onBindViewHolder(final TagViewHolder holder, int position) {
         holder.cbTag.setText(mFilteredTags.get(position).getName());
+        holder.cbTag.setPadding(Util.dpToPx((int) holder.itemView.getContext().getResources().getDimension(R.dimen.checkbox_padding))
+                , Util.dpToPx((int) holder.itemView.getContext().getResources().getDimension(R.dimen.checkbox_padding))
+                , Util.dpToPx((int) holder.itemView.getContext().getResources().getDimension(R.dimen.checkbox_padding))
+                , Util.dpToPx((int) holder.itemView.getContext().getResources().getDimension(R.dimen.checkbox_padding))
+        );
         holder.cbTag.setTag(position);
         holder.cbTag.setChecked(mTags.getSelectedTags().contains(mFilteredTags.get(position)));
-        holder.cbTag.setOnCheckedChangeListener(this);
+        //holder.cbTag.setOnCheckedChangeListener(this);
+        holder.cbTag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CheckBox checkBox = (CheckBox) view;
+                int position = (int) checkBox.getTag();
+                if (mMaxSelectableTags == null
+                        || (mMaxSelectableTags != null && mTags.getSelectedTags().size() < mMaxSelectableTags)
+                        || !checkBox.isChecked())
+                    tagSelectCallback.onSelect(mFilteredTags.get(position), checkBox.isChecked());
+                else {
+                    Util.shortToast(checkBox.getContext(), String.format(Locale.getDefault(), "Max %d item(s) are allowed", mMaxSelectableTags));
+                    checkBox.setOnClickListener(null);
+                    checkBox.setChecked(false);
+                    checkBox.setOnClickListener(this);
+                }
+            }
+        });
     }
 
     @Override
@@ -79,16 +101,19 @@ public class TagSelectionAdapter extends RecyclerView.Adapter<TagSelectionAdapte
         };
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (mTags.getSelectedTags().size() <= mMaxSelectableTags) {
-            int position = (int) buttonView.getTag();
-            tagSelectCallback.onSelect(mFilteredTags.get(position), isChecked);
-        } else {
-            Util.shortToast(buttonView.getContext(), String.format(Locale.getDefault(), "Max %d item(s) are allowed", mMaxSelectableTags));
-        }
-    }
-
+    /* @Override
+     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+         if (mTags.getSelectedTags().size() < mMaxSelectableTags) {
+             int position = (int) buttonView.getTag();
+             tagSelectCallback.onSelect(mFilteredTags.get(position), isChecked);
+         } else {
+             Util.shortToast(buttonView.getContext(), String.format(Locale.getDefault(), "Max %d item(s) are allowed", mMaxSelectableTags));
+             buttonView.setOnCheckedChangeListener(null);
+             buttonView.setChecked(false);
+             buttonView.setOnCheckedChangeListener(this);
+         }
+     }
+ */
     public void updateTag(Tags tags, Tag selectedTag) {
         this.mTags = tags;
         notifyItemChanged(mFilteredTags.indexOf(selectedTag));

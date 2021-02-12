@@ -40,4 +40,5 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.3.3'
     implementation 'androidx.navigation:navigation-ui:2.3.3'
     implementation project(path: ':PopupLibrary')
+    //implementation 'com.github.uicomponentsplugin:TagsSelection:1.0.0'
 }

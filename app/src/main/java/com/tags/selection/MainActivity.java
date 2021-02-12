@@ -14,6 +14,9 @@ import com.tags.popuplibrary.models.tagSubmitCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tags.popuplibrary.models.Constants.BundleKeys.MAX_SELECTABLE_TAGS;
+import static com.tags.popuplibrary.models.Constants.BundleKeys.TAGS;
+
 public class MainActivity extends AppCompatActivity implements tagSubmitCallback {
     private Tags tags;
 
@@ -43,7 +46,10 @@ public class MainActivity extends AppCompatActivity implements tagSubmitCallback
     }
 
     public void openDialog(View view) {
-        TagSelectCallbackSelectionFragment tagSelectionFragment = TagSelectCallbackSelectionFragment.newInstance(tags, 3);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(TAGS, tags);
+        //bundle.putSerializable(MAX_SELECTABLE_TAGS, 3);
+        TagSelectCallbackSelectionFragment tagSelectionFragment = TagSelectCallbackSelectionFragment.newInstance(bundle);
         tagSelectionFragment.show(getSupportFragmentManager().beginTransaction(), tagSelectionFragment.getClass().getSimpleName());
     }
 

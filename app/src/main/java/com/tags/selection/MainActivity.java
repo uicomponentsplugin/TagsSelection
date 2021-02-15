@@ -52,9 +52,9 @@ public class MainActivity extends AppCompatActivity implements tagSubmitCallback
     public void openDialog(View view) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(TAGS, tags);
-        bundle.putSerializable(BUTTON_COLOR, R.color.design_default_color_background);
-        bundle.putSerializable(BUTTON_TEXT_COLOR, R.color.black);
-        bundle.putSerializable(CHECK_BOX_COLOR, R.color.black);
+        bundle.putSerializable(BUTTON_COLOR, R.color.black);
+        bundle.putSerializable(BUTTON_TEXT_COLOR, R.color.white);
+        bundle.putSerializable(CHECK_BOX_COLOR, R.color.purple_700);
         bundle.putSerializable(TAG_CANCEL_COLOR, R.color.black);
         bundle.putSerializable(MAX_SELECTABLE_TAGS, 3);
         TagSelectCallbackSelectionFragment tagSelectionFragment = TagSelectCallbackSelectionFragment.newInstance(bundle);

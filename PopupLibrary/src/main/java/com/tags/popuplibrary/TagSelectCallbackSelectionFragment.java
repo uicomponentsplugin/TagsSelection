@@ -1,6 +1,7 @@
 package com.tags.popuplibrary;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -8,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +35,7 @@ import static com.tags.popuplibrary.models.Constants.BundleKeys.MAX_SELECTABLE_T
 import static com.tags.popuplibrary.models.Constants.BundleKeys.TAGS;
 import static com.tags.popuplibrary.models.Constants.BundleKeys.TAG_CANCEL_COLOR;
 
-public class TagSelectCallbackSelectionFragment extends DialogFragment implements tagSelectCallback, View.OnClickListener {
+public class TagSelectCallbackSelectionFragment extends DialogFragment implements tagSelectCallback, View.OnClickListener, DialogInterface.OnKeyListener {
     private Integer mMaxSelectableTags;
     private Integer mSubmitColor;
     private Integer mSubmitTextColor;
@@ -58,6 +60,7 @@ public class TagSelectCallbackSelectionFragment extends DialogFragment implement
         if (getArguments() == null || !(getArguments().getSerializable(TAGS) instanceof Tags))
             return;
         mTags = (Tags) getArguments().getSerializable(TAGS);
+
         if (getArguments().getInt(MAX_SELECTABLE_TAGS) != 0)
             mMaxSelectableTags = getArguments().getInt(MAX_SELECTABLE_TAGS);
         if (getArguments().getInt(BUTTON_COLOR) != 0)
@@ -98,6 +101,7 @@ public class TagSelectCallbackSelectionFragment extends DialogFragment implement
             binding.btnSubmitTagSelection.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(mSubmitColor)));
         if (mMaxSelectableTags != null)
             binding.btnSubmitTagSelection.setTextColor(ColorStateList.valueOf(getContext().getColor(mSubmitTextColor)));
+        getDialog().setOnKeyListener(this);
         return binding.getRoot();
     }
 
@@ -161,8 +165,20 @@ public class TagSelectCallbackSelectionFragment extends DialogFragment implement
     @Override
     public void onClick(View v) {
         if (v.getId() == binding.btnSubmitTagSelection.getId()) {
-            tagSubmitCallback.onSubmit(mTags);
-            ((FragmentActivity) requireContext()).getSupportFragmentManager().beginTransaction().remove(this).commit();
+            dismissDialog();
         }
+    }
+
+    private void dismissDialog() {
+        tagSubmitCallback.onSubmit(mTags);
+        ((FragmentActivity) requireContext()).getSupportFragmentManager().beginTransaction().remove(this).commit();
+    }
+
+    @Override
+    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            dismissDialog();
+        }
+        return true;
     }
 }

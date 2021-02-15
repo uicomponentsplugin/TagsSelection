@@ -1,6 +1,7 @@
 package com.tags.popuplibrary;
 
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.CompoundButtonCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tags.popuplibrary.databinding.ItemTagSelectionBinding;
@@ -52,8 +54,13 @@ public class TagSelectionAdapter extends RecyclerView.Adapter<TagSelectionAdapte
         );
         holder.cbTag.setTag(position);
         holder.cbTag.setChecked(mTags.getSelectedTags().contains(mFilteredTags.get(position)));
-        if (mCheckBoxColor != null)
-            holder.cbTag.setButtonTintList(ColorStateList.valueOf(mCheckBoxColor));
+        if (mCheckBoxColor != null){
+            if (Build.VERSION.SDK_INT < 21) {
+                CompoundButtonCompat.setButtonTintList(holder.cbTag, ColorStateList.valueOf(holder.itemView.getContext().getColor(mCheckBoxColor)));//Use android.support.v4.widget.CompoundButtonCompat when necessary else
+            } else {
+                holder.cbTag.setButtonTintList(ColorStateList.valueOf(holder.itemView.getContext().getColor(mCheckBoxColor)));//setButtonTintList is accessible directly on API>19
+            }
+        }
         //holder.cbTag.setOnCheckedChangeListener(this);
         holder.cbTag.setOnClickListener(new View.OnClickListener() {
             @Override

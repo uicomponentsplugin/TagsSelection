@@ -4,6 +4,7 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="button_margin">8dp</dimen>
+    <dimen name="button_padding">16dp</dimen>
     <dimen name="tag_selected_item_margin">8dp</dimen>
     <dimen name="tag_search_margin">12sp</dimen>
 

@@ -1,5 +1,6 @@
 package com.tags.popuplibrary;
 
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,14 @@ public class TagSelectionAdapter extends RecyclerView.Adapter<TagSelectionAdapte
 
     private Tags mTags;
     private final Integer mMaxSelectableTags;
+    private final Integer mCheckBoxColor;
     private final List<Tag> mFilteredTags = new ArrayList<>();
     private final com.tags.popuplibrary.models.tagSelectCallback tagSelectCallback;
 
-    public TagSelectionAdapter(tagSelectCallback tagSelectCallback, Tags tags, Integer maxSelectableTags) {
+    public TagSelectionAdapter(tagSelectCallback tagSelectCallback, Tags tags, Integer maxSelectableTags, Integer mCheckBoxColor) {
         this.tagSelectCallback = tagSelectCallback;
         this.mMaxSelectableTags = maxSelectableTags;
+        this.mCheckBoxColor = mCheckBoxColor;
         this.mTags = tags;
         this.mFilteredTags.addAll(tags.getAllTags());
     }
@@ -49,6 +52,8 @@ public class TagSelectionAdapter extends RecyclerView.Adapter<TagSelectionAdapte
         );
         holder.cbTag.setTag(position);
         holder.cbTag.setChecked(mTags.getSelectedTags().contains(mFilteredTags.get(position)));
+        if (mCheckBoxColor != null)
+            holder.cbTag.setButtonTintList(ColorStateList.valueOf(mCheckBoxColor));
         //holder.cbTag.setOnCheckedChangeListener(this);
         holder.cbTag.setOnClickListener(new View.OnClickListener() {
             @Override

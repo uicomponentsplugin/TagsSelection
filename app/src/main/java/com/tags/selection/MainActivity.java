@@ -14,6 +14,9 @@ import com.tags.popuplibrary.models.tagSubmitCallback;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.tags.popuplibrary.models.Constants.BundleKeys.BUTTON_COLOR;
+import static com.tags.popuplibrary.models.Constants.BundleKeys.BUTTON_TEXT_COLOR;
+import static com.tags.popuplibrary.models.Constants.BundleKeys.CHECK_BOX_COLOR;
 import static com.tags.popuplibrary.models.Constants.BundleKeys.MAX_SELECTABLE_TAGS;
 import static com.tags.popuplibrary.models.Constants.BundleKeys.TAGS;
 
@@ -48,7 +51,11 @@ public class MainActivity extends AppCompatActivity implements tagSubmitCallback
     public void openDialog(View view) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(TAGS, tags);
-        //bundle.putSerializable(MAX_SELECTABLE_TAGS, 3);
+        bundle.putSerializable(BUTTON_COLOR, R.color.design_default_color_background);
+        bundle.putSerializable(BUTTON_TEXT_COLOR, R.color.black);
+        bundle.putSerializable(CHECK_BOX_COLOR, R.color.secondaryDarkColor);
+        bundle.putSerializable(BUTTON_TEXT_COLOR, R.color.black);
+        bundle.putSerializable(MAX_SELECTABLE_TAGS, 3);
         TagSelectCallbackSelectionFragment tagSelectionFragment = TagSelectCallbackSelectionFragment.newInstance(bundle);
         tagSelectionFragment.show(getSupportFragmentManager().beginTransaction(), tagSelectionFragment.getClass().getSimpleName());
     }

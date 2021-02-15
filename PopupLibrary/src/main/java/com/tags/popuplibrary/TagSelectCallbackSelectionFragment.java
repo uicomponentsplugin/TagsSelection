@@ -1,7 +1,9 @@
 package com.tags.popuplibrary;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,11 +26,19 @@ import com.tags.popuplibrary.models.Tags;
 import com.tags.popuplibrary.models.tagSelectCallback;
 import com.tags.popuplibrary.models.tagSubmitCallback;
 
+import static com.tags.popuplibrary.models.Constants.BundleKeys.BUTTON_COLOR;
+import static com.tags.popuplibrary.models.Constants.BundleKeys.BUTTON_TEXT_COLOR;
+import static com.tags.popuplibrary.models.Constants.BundleKeys.CHECK_BOX_COLOR;
 import static com.tags.popuplibrary.models.Constants.BundleKeys.MAX_SELECTABLE_TAGS;
 import static com.tags.popuplibrary.models.Constants.BundleKeys.TAGS;
+import static com.tags.popuplibrary.models.Constants.BundleKeys.TAG_CANCEL_COLOR;
 
 public class TagSelectCallbackSelectionFragment extends DialogFragment implements tagSelectCallback, View.OnClickListener {
     private Integer mMaxSelectableTags;
+    private Integer mSubmitColor;
+    private Integer mSubmitTextColor;
+    private Integer mCheckBoxColor;
+    private Integer mTagCancelColor;
     private Tags mTags;
     private FragmentTagSelectionListBinding binding;
     private tagSubmitCallback tagSubmitCallback;
@@ -50,13 +60,22 @@ public class TagSelectCallbackSelectionFragment extends DialogFragment implement
         mTags = (Tags) getArguments().getSerializable(TAGS);
         if (getArguments().getInt(MAX_SELECTABLE_TAGS) != 0)
             mMaxSelectableTags = getArguments().getInt(MAX_SELECTABLE_TAGS);
+        if (getArguments().getInt(BUTTON_COLOR) != 0)
+            mSubmitColor = getArguments().getInt(BUTTON_COLOR);
+        if (getArguments().getInt(BUTTON_TEXT_COLOR) != 0)
+            mSubmitTextColor = getArguments().getInt(BUTTON_TEXT_COLOR);
+        if (getArguments().getInt(CHECK_BOX_COLOR) != 0)
+            mCheckBoxColor = getArguments().getInt(CHECK_BOX_COLOR);
+        if (getArguments().getInt(TAG_CANCEL_COLOR) != 0)
+            mTagCancelColor = getArguments().getInt(TAG_CANCEL_COLOR);
+
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentTagSelectionListBinding.inflate(inflater);
         binding.rvTags.setLayoutManager(new LinearLayoutManager(binding.getRoot().getContext()));
-        binding.rvTags.setAdapter(new TagSelectionAdapter(this, mTags, mMaxSelectableTags));
+        binding.rvTags.setAdapter(new TagSelectionAdapter(this, mTags, mMaxSelectableTags, mCheckBoxColor));
         binding.rvTags.post(this::displaySelectedTags);
         binding.etTagsSearch.addTextChangedListener(new TextWatcher() {
             @Override
@@ -75,6 +94,10 @@ public class TagSelectCallbackSelectionFragment extends DialogFragment implement
             }
         });
         binding.btnSubmitTagSelection.setOnClickListener(this);
+        if (mSubmitColor != null)
+            binding.btnSubmitTagSelection.setBackgroundTintList(ColorStateList.valueOf(getContext().getColor(mSubmitColor)));
+        if (mMaxSelectableTags != null)
+            binding.btnSubmitTagSelection.setTextColor(ColorStateList.valueOf(getContext().getColor(mSubmitTextColor)));
         return binding.getRoot();
     }
 
@@ -111,6 +134,8 @@ public class TagSelectCallbackSelectionFragment extends DialogFragment implement
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             Util.setLayoutParamsMargin(params, 16);
             tagSelectedBinding.getRoot().setLayoutParams(params);
+            if (mTagCancelColor != null)
+                tagSelectedBinding.imgRemoveTag.getDrawable().setColorFilter(tagSelectedBinding.getRoot().getContext().getColor(mTagCancelColor), PorterDuff.Mode.MULTIPLY);
            /* tagSelectedBinding.getRoot().setPadding(Util.dpToPx((int) getContext().getResources().getDimension(R.dimen.selected_tag_padding))
                     , Util.dpToPx((int) getContext().getResources().getDimension(R.dimen.selected_tag_padding))
                     , Util.dpToPx((int) getContext().getResources().getDimension(R.dimen.selected_tag_padding))

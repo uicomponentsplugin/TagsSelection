@@ -11,6 +11,6 @@
     <dimen name="checkbox_padding">4dp</dimen>
     <dimen name="selected_tag_padding">8dp</dimen>
 
-    <dimen name="card_corner_radius">2dp</dimen>
+    <dimen name="card_corner_radius">8dp</dimen>
     <dimen name="regular_text_size">18sp</dimen>
 </resources>
